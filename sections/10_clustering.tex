@@ -68,51 +68,51 @@ where $G(\theta) = \sum_{k=1}^\infty \pi_k \delta_{\theta_k}\!(\theta)$
 $\color{gray} \leftarrow \text{ discrete distr.}$
 
 
-\emph{Stick-breaking process:}
+% \emph{Stick-breaking process:}
 
-Draw $\theta_k \sim H$ and $\beta_k \sim \mathrm{Beta}(1,\alpha)$ for $k{=}1,2,\ldots$
+% Draw $\theta_k \sim H$ and $\beta_k \sim \mathrm{Beta}(1,\alpha)$ for $k{=}1,2,\ldots$
 
-$\pi_k = \beta_k (1 - \sum_{k=1}^{k-1} \pi_i)$
-$\implies \highlight{\!\pi {=} \{ \pi_k \}_{k=1}^\infty \sim \mathrm{GEM}(\alpha)\!\!}$
+% $\pi_k = \beta_k (1 - \sum_{k=1}^{k-1} \pi_i)$
+% $\implies \highlight{\!\pi {=} \{ \pi_k \}_{k=1}^\infty \sim \mathrm{GEM}(\alpha)\!\!}$
 
-\vspace{-2pt}$\implies
-\begingroup \color{gray}
-    \sum_{k=1}^\infty \pi_k \delta_{\theta_k}\!(\theta) =
-\endgroup
-\highlight{G(\theta) \sim \mathrm{DP}(\alpha, H)}$
+% \vspace{-2pt}$\implies
+% \begingroup \color{gray}
+%     \sum_{k=1}^\infty \pi_k \delta_{\theta_k}\!(\theta) =
+% \endgroup
+% \highlight{G(\theta) \sim \mathrm{DP}(\alpha, H)}$
 
-Sample $\theta^{(1)}, \theta^{(2)}, \ldots$ from $G$.\enskip
-Denote $\theta^{(i)} {=} \theta_{k_i}$.
+% Sample $\theta^{(1)}, \theta^{(2)}, \ldots$ from $G$.\enskip
+% Denote $\theta^{(i)} {=} \theta_{k_i}$.
 
-$\implies \theta^{(i)}, \theta^{(j)}$ with $k_i {=} k_j$ belong to same ``cluster''
-
-
-\emph{Chinese Rest. Process:}
-\vspace{-5pt}
-
-$P(\text{cust}_{n+1} \text{ joins table } \tau \mid \mathcal P) =
-\begin{cases}
-    \frac{\abs{\tau}}{\alpha + n} & \text{if } \tau \in \mathcal P, \\
-    \frac{\alpha}{\alpha + n} & \text{new table}
-\end{cases}$
-
-$P(\text{partition } \mathcal P)
-= \frac{\alpha^{\abs{\mathcal P}}}{\alpha^{(n)}} \prod_{\tau\in\mathcal P} (\abs{\tau} - 1)!$
-
-\textbf{expec. \#clusters:}\enskip
-$\E{\bm 1} = \sum_{i\leq N} \frac{\alpha}{\alpha + i} \sim \mathcal O(\alpha \log N)$
+% $\implies \theta^{(i)}, \theta^{(j)}$ with $k_i {=} k_j$ belong to same ``cluster''
 
 
-\emph{De Finetti:}
-$(X_1, \ldots, X_n)$ are inftly \textbf{exchangable} RVs \textit{if}
-$P(X_1, \ldots, X_n) = \int \paren*{\prod_{i=1}^n p(X_i \mid G)} \diff P(G)$
+% \emph{Chinese Rest. Process:}
+% \vspace{-5pt}
 
-% Equivalent formulations (?)
-\iffalse
-    $P(X_1, \ldots X_n) = \int P(G) \prod_{i=1}^n p(X_i \mid G) \diff G$
+% $P(\text{cust}_{n+1} \text{ joins table } \tau \mid \mathcal P) =
+% \begin{cases}
+%     \frac{\abs{\tau}}{\alpha + n} & \text{if } \tau \in \mathcal P, \\
+%     \frac{\alpha}{\alpha + n} & \text{new table}
+% \end{cases}$
+
+% $P(\text{partition } \mathcal P)
+% = \frac{\alpha^{\abs{\mathcal P}}}{\alpha^{(n)}} \prod_{\tau\in\mathcal P} (\abs{\tau} - 1)!$
+
+% \textbf{expec. \#clusters:}\enskip
+% $\E{\bm 1} = \sum_{i\leq N} \frac{\alpha}{\alpha + i} \sim \mathcal O(\alpha \log N)$
+
+
+% \emph{De Finetti:}
+% $(X_1, \ldots, X_n)$ are inftly \textbf{exchangable} RVs \textit{if}
+% $P(X_1, \ldots, X_n) = \int \paren*{\prod_{i=1}^n p(X_i \mid G)} \diff P(G)$
+
+% % Equivalent formulations (?)
+% \iffalse
+%     $P(X_1, \ldots X_n) = \int P(G) \prod_{i=1}^n p(X_i \mid G) \diff G$
     
-    $P(X_1, \ldots X_n) = \int P(\theta) \prod_{i=1}^n p(X_i \mid \theta) \diff\theta$
-\fi
+%     $P(X_1, \ldots X_n) = \int P(\theta) \prod_{i=1}^n p(X_i \mid \theta) \diff\theta$
+% \fi
 
 
 \subsubsection{Finite GMM}

@@ -102,4 +102,46 @@ $q(x_t|x_0) = \mathcal{N}(x_t|\sqrt{\bar{\alpha}_t}x_0, (1-\bar{\alpha}_t)I)$
 \textbf{Reverse Process:} UNet predicts noise $\epsilon_\theta(x_t, t)$ added to form $x_t$ from $x_0$. Then reconstruct $x_{t-1}$:
 
 $x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\left(x_t - \frac{\sqrt{1-\alpha_t}}{\sqrt{1-\bar{\alpha}_t}}\epsilon_\theta(x_t, t)\right) + \sigma_t z$, $z \sim \mathcal{N}(0, I)$
+
+
+\subsection{Reinforcement Learning}
+\emph{Rew.-to-go:} $G_t =\sum_{k=0}^\infty \gamma^k r_{t+k} = r_t + \gamma G_{t+1}$. \emph{Markov Property:} $P(s_{t+1}|s_{0:t}, a_{0:t}) = P(s_{t+1}|s_t, a_t)$. \emph{Values:} $V^\pi(s) = \mathbb{E}_\pi[G_t | s_t = s]$, $Q^\pi(s, a) = \mathbb{E}_\pi[G_t | s_t = s, a_t = a]$. \emph{Bellman Exp.:} $V^\pi(s) = \sum_{a,s'} \pi(a|s) p(s'|s, a) (r + \gamma V^\pi(s'))$. \emph{" Opt.:} $Q^*(s, a) = \sum_{s'} p(s'|s, a) (r + \gamma \max_{a'} Q^*(s', a'))$. \emph{Q-Learning:} $Q(s, a) \leftarrow Q(s, a) + \alpha [r + \gamma \max_{a'} Q(s', a') - Q(s, a)]$ (Off-policy). \emph{DQN:} MLP $Q_\theta \approx Q^*$. Loss $L(\theta) = (r + \gamma \max_{a'} Q_{\theta^-}(s', a') - Q_\theta(s, a))^2$. Uses \textbf{Replay Buffer} (decorrelates data) and \textbf{Target Network} $\theta^-$ (stablises targets). \emph{Policy Gradient:} $\nabla_\theta J(\theta) = \mathbb{E} [ \sum_t \nabla_\theta \log \pi_\theta(a_t|s_t) G_t ]$. \emph{REINFORCE:} 1) Initialize env. 2) For each epoch 2.1) Initialize buffer. 2.2) For each episode: collect data using $\pi_\theta$, compute $G_t$, store in buffer. 2.3) Compute $\nabla_\theta L_{PG}(\theta) = -\frac{1}{|D|} \sum_{D} \sum_t \nabla_\theta\log \pi_\theta(a_t|s_t) G_t$ using buffer. 2.4) Update $\theta$ using $\nabla_\theta L_{PG}(\theta)$.
+
+% \begin{highlightbox}
+%     \begin{itemize}[leftmargin=0pt]
+%         \item[] Create env
+%         \item[] {\color{violet} Init actor and critic}
+%         \item[]\textbf{for each} epoch:
+%         \begin{itemize}[leftmargin=10pt]
+%             \item[] Initialize Buffer
+%             \item[] \textbf{for each} episode:
+%             \begin{itemize}[leftmargin=10pt]
+%                 \item[] Collect data in env using policy
+%                 \item[] Compute rewards-to-go
+%                 \item[] Store data in buffer
+%             \end{itemize}
+%         {\color{purple} 
+%             \item[] \textbf{for each} critic update:
+%             \begin{itemize}[leftmargin=10pt]
+%                 \item[] compute critic loss and Gradient
+%                 \item[] Update critic parameters
+%             \end{itemize}}
+%         {\color{violet}
+%         \item[]Compute values for each tstamp using critic
+%         \item[] Compute GAE
+%         }
+%         {\color {blue}
+%         \item[] \textbf{for each} actor update:
+%         \item[]  
+%         } 
+%         \item[]  Compute {\color{violet} actor} loss and Gradient
+%         \item[] Update policy parameters \color{violet} (actor)
+%         \end{itemize}
+%     \end{itemize}
+% \end{highlightbox}
+
+. \emph{Actor-Critic:} Actor $\pi_\theta$ and Critic $V_\phi$. Advantage $A_t = G_t - V_\phi(s_t)$. \emph{GAE:} $A^{GAE}_t = \sum_{l=0}^{T-t-1} (\gamma \lambda)^l \delta_{t+l}$ where $\delta_t = r_t + \gamma V_\phi(s_{t+1}) - V_\phi(s_t)$. \emph{AC+GAE:} 1) Initialize env., actor, critc 2-2.2) \textit{Same} 2.3) For each critic update compute critic loss and optimize it. 2.4) Compute values for each tstamp using critic. 2.5) Compute GAE. 2.6) Compute actor loss and optimize it (policy). 
+\emph{PPO:} $L_{CLIP}(\theta) = -\mathbb{E} [ \min(w_t A_t, \text{clip}(w_t, 1-\epsilon, 1+\epsilon) A_t) ], w_t(\theta) = \frac{\pi_\theta(a_t|s_t)}{\pi_{\theta_{old}}(a_t|s_t)}$. 1-2.2) \textit{Same as AC+GAE} \sout{2.3)} 2.4-2.5) \textit{Same as AC+GAE} 2.6) For each update 2.6.1) Compute critic loss and update it 2.6.2) Same with actor. \emph{Entropy Reg.:} $L_{total} = L_{policy} + c_V L_V - c_H H(\pi_\theta)$ (prevents premature collapse).
+
+
 % ===
