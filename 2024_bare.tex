@@ -1,0 +1,671 @@
+\documentclass[10pt,landscape,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{multicol}
+\usepackage{calc}
+\usepackage{ifthen}
+\usepackage[landscape]{geometry}
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{color,graphicx,overpic}
+\usepackage{hyperref}
+\usepackage{enumitem}
+
+\geometry{top=0.5cm,left=0.5cm,right=0.5cm,bottom=0.5cm}
+
+% Turn off header and footer
+\pagestyle{empty}
+
+% Redefine section commands to use less space
+\makeatletter
+\renewcommand{\section}{\@startsection{section}{1}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%x
+                                {\normalfont\large\bfseries}}
+\renewcommand{\subsection}{\@startsection{subsection}{2}{0mm}%
+                                {-1explus -.5ex minus -.2ex}%
+                                {0.5ex plus .2ex}%
+                                {\normalfont\normalsize\bfseries}}
+\renewcommand{\subsubsection}{\@startsection{subsubsection}{3}{0mm}%
+                                {-1ex plus -.5ex minus -.2ex}%
+                                {1ex plus .2ex}%
+                                {\normalfont\small\bfseries}}
+\makeatother
+
+% Don't print section numbers
+\setcounter{secnumdepth}{0}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt plus 0.5ex}
+
+% Compact lists
+\setlist{nolistsep}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\V}{\mathbb{V}}
+\newcommand{\Cov}{\text{Cov}}
+\newcommand{\Tr}{\text{Tr}}
+\DeclareMathOperator*{\argmax}{argmax}
+\DeclareMathOperator*{\argmin}{argmin}
+
+\begin{document}
+\raggedright
+\footnotesize
+\begin{multicols}{3}
+
+\setlength{\premulticols}{1pt}
+\setlength{\postmulticols}{1pt}
+\setlength{\multicolsep}{1pt}
+\setlength{\columnsep}{2pt}
+
+\section{1 Basics}
+
+\textbf{Taylor:} $f(a) + \frac{f'(a)}{1!}(x-a) + \frac{f''(a)}{2!}(x-a)^2 + \ldots$
+
+$f(a) + \left.\frac{\partial f(x)}{\partial x}\right|_a - \frac{1}{2}(x-a)^\top \left.\frac{\partial^2 f(x)}{\partial x \partial x^\top}\right|_a (x-a)$
+
+Power series of $\exp$: $\exp(x) \triangleq \sum_{k=0}^\infty \frac{x^k}{k!}$
+
+\textbf{Entropy:} $H(X) = \E[X]{-\log P(X=x)}$
+
+\textbf{Divergence:} $\text{KL}(p \| q) = \sum_{x \in \mathcal{X}} p(x) \log \frac{p(x)}{q(x)} \geq 0$
+
+\textbf{CE:} $\text{CE}(p \| q) := -\sum_{x \in \mathcal{X}} p(x) \log q(x) = \text{KL}(p \| q) + H(p)$
+
+\textbf{Cauchy-Schwarz:} $|\E{X,Y}|^2 \leq \E{X^2}\E{Y^2}$
+
+\textbf{Jensen, $f(X)$ convex:} $f(\E{X}) \leq \E{f(X)}$
+
+\subsection{1.1 Probability / Statistics}
+
+\textbf{Gaussian:} $\mathcal{N}(x | \mu, \sigma^2) = \frac{1}{\sqrt{2\pi\sigma^2}} \exp\left(-\frac{1}{2}\frac{(x-\mu)^2}{\sigma^2}\right)$
+
+$\mathcal{N}(x|\mu,\Sigma) = \frac{1}{\sqrt{(2\pi)^d |\Sigma|}} \exp\left(-\frac{1}{2}(x-\mu)^\top\Sigma^{-1}(x-\mu)\right)$
+
+$X \sim \mathcal{N}(\mu, \Sigma), Y = A + BX \Rightarrow Y \sim \mathcal{N}(A + B\mu, B\Sigma B^\top)$
+
+\textbf{Binomial:} $f(k,n;p) = P(X=k) = \binom{n}{k} p^k(1-p)^{n-k}$
+
+$\V{X} = \E{(X - \E{X})^2} = \E{X^2} - \E{X}^2$
+
+$\V{X+Y} = \V{X} + \V{Y} + 2\Cov(X,Y)$
+
+$\Cov(X,Y) = \E{(X - \E{X})(Y - \E{Y})} = \E{XY} - \E{X}\E{Y}$
+
+$\Cov(aX,bY) = ab\Cov(X,Y)$
+
+\subsection{1.2 Calculus}
+
+$\int uv' dx = uv - \int u'v dx$
+
+$\frac{\partial}{\partial x}\frac{g}{h} = \frac{g'h}{h^2} - \frac{gh'}{h^2}$
+
+$\frac{\partial}{\partial x}(b^\top Ax) = A^\top b$
+
+$\frac{\partial}{\partial x}(b^\top x) = \frac{\partial}{\partial x}(x^\top b) = b$
+
+$\frac{\partial}{\partial X}(c^\top X^\top b) = bc^\top$
+
+$\frac{\partial}{\partial X}(c^\top Xb) = cb^\top$
+
+$\frac{\partial}{\partial x}(x^\top Ax) = (A^\top + A)x \xrightarrow{A \text{ sym.}} 2Ax$
+
+$\frac{\partial}{\partial X}\Tr(X^\top A) = A$
+
+\textbf{Trace trick:} $x^\top Ax = \Tr(x^\top Ax) = \Tr(xx^\top A) = \Tr(Axx^\top)$
+
+$|X^{-1}| = |X|^{-1}$
+
+$\frac{\partial}{\partial X}\log|X| = X^{-\top}$
+
+$\frac{d}{dx}|x| = \frac{x}{|x|}$
+
+$\frac{\partial}{\partial x}\|x\|^2 = \frac{\partial}{\partial x}(x^\top x) = 2x$
+
+$\frac{\partial}{\partial x}\|x-b\|^2 = \frac{x-b}{\|x-b\|^2}$
+
+$\frac{\partial}{\partial x}\|x\|_1 = \text{sgn}(x)$, $\text{sgn}(x) \in \{\pm 1\}^p$ is row-wise
+
+$\sigma(x) = \frac{1}{1+\exp(-x)} \Rightarrow \nabla\sigma(x) = \sigma(x)(1-\sigma(x))$
+
+$\tanh x = \frac{2\sinh x}{2\cosh x} = \frac{e^x - e^{-x}}{e^x + e^{-x}}$
+
+$\nabla \tanh x = 1 - \tanh^2 x$
+
+\section{2 Density Estimation}
+
+\textbf{Bayesianism:} Define prior $P(\theta)$, define likelihood $P(X|\theta)$, compute posterior $P(\theta|x_1\ldots n)$.
+
+\textbf{Bayes:} $P(\theta|X) = \frac{P(X|\theta)P(\theta)}{P(X)}$, $P(X) = \sum_\theta P(X|\theta_i)P(\theta_i)$
+
+\textbf{Frequentism:} Define param. model $P(Y|X,\theta)$, compute likelihood of data $P(X,Y|\theta)$ and compute $\hat{\theta}_{\text{MLE}}$ via $\argmax_\theta$ of likelihood.
+
+\textbf{Ex. Gaussian:} $X_{n_i=1} \sim \mathcal{N}(\mu, \sigma^2) \Rightarrow \log L_n(\mu, \sigma) = -n\log\sigma - \frac{nS^2}{2\sigma^2} - \frac{n(\bar{X}-\mu)^2}{2\sigma^2} \Rightarrow \hat{\mu} = \bar{X}, \hat{\sigma} = S$
+
+\subsection{2.1 Estimation - MLE Properties}
+
+\textbf{Consistency:} $\forall \epsilon > 0, P\{|\hat{\theta}_n - \theta^*| > \epsilon\} \xrightarrow{n \to \infty} 0$
+
+\textbf{Equivariance:} If $\hat{\theta}_n$ is MLE of $\theta$, then $g(\hat{\theta}_n)$ is MLE of $g(\theta)$.
+
+\textbf{Asymp. normality:} $\frac{1}{\sqrt{n}}(\hat{\theta}_n - \theta^*) \to \mathcal{N}(0, J^{-1}(\theta^*)I_n(\theta^*)J^{-1}(\theta^*))$
+
+\textbf{Asymp. efficiency:} $\hat{\theta}_n$ minimises $\E{(\hat{\theta}_n - \theta^*)^2}$ as $n \to \infty$, i.e. $\E{(\hat{\theta}_n - \theta^*)^2} \xrightarrow{n \to \infty} \frac{1}{I_n(\theta^*)}$ (Rao Cr.)
+
+Among all consistent estimators $\hat{\theta}_n$ has smallest variance: $\lim_{n \to \infty}(\V{\hat{\theta}_n}I_n(\theta^*))^{-1} = 1$
+
+\subsection{2.2 Rao Cramer inequality}
+
+All $\E$ w.r.t. $P(x|\theta^*)$
+
+\textbf{Score func.:} $\Lambda = \frac{\partial \log P(x|\theta)}{\partial \theta}$, $\E{\Lambda} = 0$
+
+\textbf{Fisher info.:} $I_n(\theta) = \V{\Lambda} = \E{\Lambda^2}$
+
+$\E[x|\theta]{\Lambda\hat{\theta}} = \frac{\partial b_{\hat{\theta}}}{\partial \theta} + 1$ (1) where $b_{\hat{\theta}} := \E[x|\theta]{\hat{\theta}} - \theta$.
+
+$\E[x|\theta]{(\Lambda - \E{\Lambda})(\hat{\theta} - \E{\hat{\theta}})}^2 = (\E[x|\theta]{\Lambda\hat{\theta}} - \E[x|\theta]{\Lambda}\E{\hat{\theta}})^2 = (\E[x|\theta]{\Lambda\hat{\theta}})^2$ (2)
+
+Cauchy-Schwarz: $\E[x|\theta]{\Lambda\hat{\theta}}^2 = (\E{\Lambda(\hat{\theta} - \E{\hat{\theta}})})^2 \leq \E[x|\theta]{\Lambda^2} \cdot \E[x|\theta]{(\hat{\theta} - \theta - \E{\hat{\theta}} + \theta)^2} = \E[x|\theta]{\Lambda^2}(\E[x|\theta]{(\hat{\theta} - \theta)^2} - b_{\hat{\theta}}^2)$
+
+\textbf{General bound:} $\E{(\hat{\theta}_n - \theta^*)^2} \geq \frac{(1 + \frac{\partial}{\partial \theta}b_{\hat{\theta}})^2}{\E{\Lambda^2}} + b_{\hat{\theta}}^2$
+
+\textbf{Unbiased case:} $\E{(\hat{\theta}_n - \theta^*)^2} = \V{\hat{\theta}_n} \geq \frac{1}{I_n(\theta^*)}$
+
+\textbf{Tradeoff:} $\E{(\hat{\theta}_n - \theta^*)^2} = \V{\hat{\theta}_n} + \text{bias}^2(\hat{\theta}_n)$
+
+\section{3 (Linear) Regression}
+
+Model: $\hat{y} = X\beta$
+
+\textbf{Bayesian view:} $(Y|X,\beta) \sim \mathcal{N}(x^\top\beta, \sigma^2 I)$
+
+Distrib. of estimator $\hat{\beta}_{\text{LS}} \sim \mathcal{N}(\beta, (X^\top X)^{-1}\sigma^2)$
+
+\textbf{Ridge:} $\text{RSS}(\beta,\lambda) = (y - X^\top\beta)^\top(y - X^\top\beta) + \lambda\beta^\top\beta$
+
+$\hat{\beta} = (X^\top X + \lambda I)^{-1}X^\top y$, prior: $\beta \sim \mathcal{N}(0, \frac{\sigma^2}{\lambda}I)$
+
+\textbf{Lasso:} $\hat{\beta} = \argmin_\beta \sum_{i \leq n}(y_i - x_i^\top\beta)^2 + \lambda\|\beta\|_1$
+
+(no closed form), prior: $p(\beta_i) = \frac{\lambda}{4\sigma^2}\exp(-|\beta_i|\frac{\lambda}{2\sigma^2})$
+
+\textbf{Bias-variance:} $\text{MSE} = \E[D,X,Y]{(\hat{f}(x) - Y)^2}$
+
+$= (\E[D,X]{\hat{f}(x)} - \E{Y})^2 + \E[D]{(\E[D,X]{\hat{f}(x)} - \hat{f}(x))^2} + \E{(E[Y] - Y)^2}$
+
+$= \text{bias}^2 + \text{variance} + \text{noise}$
+
+\textbf{Non-Linear:} $\hat{\beta} = (\Phi^\top\Phi)^{-1}\Phi^\top Y$, $y' = \phi(x')^\top\hat{\beta}$
+
+\textbf{Gauss-Markov Theorem:} For any linear estimator $\tilde{\theta} = c^\top y = a^\top(\hat{\beta} + Dy)$ that is unbiased for $a^\top\beta$, it holds: $\V{a^\top\hat{\beta}} \leq \V{c^\top y}$.
+
+\subsection{3.1 Causality}
+
+\textbf{Shortcut Learning:} Model uses spurious correlation $X \leftrightarrow Y$ (e.g. grass $\leftrightarrow$ cow)
+
+$X^{\perp_\alpha}$: Part of $X$ not causally influenced by $\alpha$
+
+\textbf{Causal:} $X^{\perp_W}$ and $X,W \& Y$ are causes of $Y$.
+
+\textbf{Anti-Causal:} $X^{\perp_W}$ and $X,W \& Y$ are caused by $Y$.
+
+$W$ non-causal feature (e.g. background) influences $X$ but not $Y$.
+
+\textbf{Counterfactually Inv.:} $f(X(w)) = f(X(w'))$ for $w,w' \in W$.
+
+\textbf{Confounding:} Hidden $U$ affects $W,X$.
+
+\textbf{Selection:} Hidden $S$ filters on $W,X$.
+
+\textbf{Theorem For Counterfactual Invariance (CI):}
+
+Anti-causal: $f(X) \perp W | Y$
+
+Causal (no selection): $f(X) \perp W$
+
+Causal (no confounding): $Y \perp X | X^{\perp_W}, W$ and $f(X) \perp W | Y$.
+
+\section{4 Uncertainty Quantification}
+
+\subsection{4.1 Bayesian Linear Regression}
+
+\textbf{Model:} $y = X^\top\beta + \epsilon$, with $\epsilon \sim \mathcal{N}(\epsilon | 0, \sigma^2 I)$
+
+\textbf{Likelihood:} $P(y|X,\beta,\sigma) = \mathcal{N}(y | X^\top\beta, \sigma^2 I)$
+
+\textbf{Prior:} $P(\beta|\Lambda) = \mathcal{N}_d(\beta|0, \Lambda^{-1}) \propto \exp(-\frac{1}{2}\beta^\top\Lambda\beta)$
+
+(Ridge regr. if $\Lambda = \lambda I$ and $\sigma = 1$)
+
+\textbf{Posterior:} $P(\beta|X,y,\Lambda) = \mathcal{N}(\beta | \mu_\beta, \Sigma_\beta)$
+
+with $\mu_\beta = (X^\top X + \sigma^2\Lambda)^{-1}X^\top y$
+
+and $\Sigma_\beta = \sigma^2(X^\top X + \sigma^2\Lambda)^{-1}$
+
+$\Rightarrow y \sim \mathcal{N}(y|0, X\Lambda^{-1}X^\top + \sigma^2 I)$, $k(x_i, x_j) \triangleq x_i^\top\Lambda^{-1}x_j$
+
+\subsection{4.2 Gaussian Process $O(n^3)$}
+
+$y \sim \mathcal{N}(y | m(X), K(X,X) + \sigma^2 I)$
+
+$\begin{bmatrix} y \\ y_{n+1} \end{bmatrix} \sim \mathcal{N}\left(\begin{bmatrix} y \\ y_{n+1} \end{bmatrix} \middle| \begin{bmatrix} m(X) \\ m(x_{n+1}) \end{bmatrix}, \begin{bmatrix} C_n & k \\ k^\top & c \end{bmatrix}\right)$
+
+$p(y_{n+1}|x_{n+1}, X, y) = \mathcal{N}(y_{n+1} | \mu_{n+1}, \sigma_{n+1}^2)$
+
+with $\mu_{n+1} = m(x_{n+1}) + k^\top C_n^{-1}(y - m(X))$
+
+and $\sigma_{n+1}^2 = c - k^\top C_n^{-1} k$
+
+where $K = k(X,X)$, $k = k(x_{n+1}, X)$,
+
+$C_n = K + \sigma^2 I$, $c = k(x_{n+1}, x_{n+1}) + \sigma^2$
+
+\subsection{4.3 Kernels}
+
+Scalar product $K_{ij} = k(x_i, x_j)$
+
+\textbf{Valid kernel:} must be symmetric and p.s.d. ($x^\top Kx \geq 0 \, \forall x$ or pos. eigenvalues or pos. principal minors). Must have a (pot. $\infty$-dim.) feature vector $\phi$ s.t. $k(x,x') = \phi(x)^\top\phi(x')$.
+
+\textbf{Common kernels:}
+
+Polynomial: $(x^\top x' + 1)^p$, $p \in \mathbb{N}$
+
+RBF (Gaussian): $\sigma^2 \exp(-\|x - x'\|_2^2/2l^2)$
+
+Periodic: $\sigma^2 \exp(-2\sin^2(\pi\|x - x'\|/p)/l^2)$
+
+\textbf{Kernel construction:}
+\begin{itemize}[leftmargin=*]
+\item $k_1 + k_2$
+\item $c \cdot k_1$, $c > 0$
+\item $k_1 \cdot k_2$
+\item $f(x)k_1(x,x')f(x')$
+\item $k(\phi(x), \phi(x'))$ with $\phi : \mathcal{X} \to \mathbb{R}^d$
+\item $g(k_1)$ with $g$ : exp. or polyn. w/ all pos. coeff.
+\end{itemize}
+
+\subsection{4.4 Statistical Model Validation}
+
+\textbf{Bootstrap:} $\hat{R}_{\text{bs}} = \frac{1}{n}\sum_{i=1}^n \frac{1}{|C_{-i}|}\sum_{b \in C_{-i}} L(y_i, \hat{f}_{*b}(x_i))$
+
+where $C_{-i} = \{b : (x_i, y_i) \notin Z_{*b}\}$
+
+$P(\text{sample in bootstrap}) = 1 - (1 - \frac{1}{n})^n \to 1 - \frac{1}{e} \approx 0.632$
+
+$\Rightarrow \hat{R}_{(.632)} = 0.368 \cdot \hat{R}_{(A)} + 0.632 \cdot \hat{R}_{\text{bs}}$
+
+\textbf{OLSE:} $\hat{\beta}|X \sim \mathcal{N}(\beta^*, \sigma^2(X^\top X)^{-1})$ with $\hat{\sigma}^2 = \frac{1}{n-d}\sum_i (X\hat{\beta} - Y)^2$.
+
+$\Rightarrow 1 - \alpha$ CI: $\hat{\beta}_j \pm z_{\alpha/2}\widehat{\text{se}}(\hat{\beta}_j)$
+
+\textbf{P-Value:} $p = \sup_{\theta \in \Theta_0} \Pr[t(X_1, \ldots X_n) \geq t(x_1, \ldots, x_n) | \theta]$
+
+\textbf{Wald Test:} Let $\hat{\theta}$ asymp. normal, then $W = \frac{\hat{\theta} - \theta_0}{\widehat{\text{se}}}$
+
+\subsection{4.5 Bayesian Deep Learning}
+
+\textbf{(Intr.) Posterior:} $p(w|D) \propto p(w)p(D|w)$.
+
+\textbf{Var. Inf.:} Find $q(w|\theta) = \mathcal{N}(\mu, \nu^2 I)$
+
+$\theta^* = \argmin_\theta \text{KL}(q(w|\theta) \| p(w|D)) = \argmin_\theta \E[w \sim q(\cdot|\theta)]{F(w,\theta)}$
+
+where $F(w,\theta) = \log q(w|\theta) - \log p(w) - \log p(D|w)$.
+
+\textbf{Reparam.:} $w = \mu + \nu \epsilon$, $\epsilon \sim \mathcal{N}(0,I)$
+
+$\mu \leftarrow \mu - \eta_t(\epsilon^\top\frac{\partial}{\partial w}F(w,\phi) + \frac{\partial}{\partial \mu}F(w,\phi))$
+
+$\nu \leftarrow \nu - \eta_t(\epsilon^\top\frac{\partial}{\partial w}F(w,\phi) + \frac{\partial}{\partial \nu}F(w,\phi))$
+
+\subsection{4.6 Active Learning}
+
+$I(X;Y) = H(X) - H(X|Y)$
+
+\textbf{Mutual Info:} $I(X;Y) = \sum_{x,y} p(x,y) \log \frac{p(x,y)}{p(x)p(y)}$
+
+\textbf{Transd.-L.:} $x_n = \argmax_{x \in S} I(f_{x \in A}; y_x | D_{n-1})$
+
+$\to$ For $f \sim \text{GP}(\mu,k)$ : $I = \frac{1}{2}\log \frac{\text{Var}(y_x|D_{n-1})}{\text{Var}(y_x|f_{x \in A}, D_{n-1})}$
+
+\textbf{Safe BO:} GP $s_{f^*}, g^*$ observe $y_i = f^*(x_i)$, $z_i = g^*(x_i)$
+
+95\% conf.: $[l_n^f, u_n^f], [l_n^g, u_n^g]$
+
+$S_n = \{x : l_n^g(x) \geq 0\}$, $\hat{S}_n = \{x : u_n^g(x) \geq 0\}$
+
+$A_n = \{x \in \hat{S}_n : u_n^f(x) \geq \max_{x' \in S_n} l_n^f(x')\}$
+
+Now ITL on sample space $S_n$, target space $A_n$.
+
+\textbf{Batch Active Learning:} $B_\delta(x) = \{x' : \|x - x'\| \leq \delta\}$
+
+$\Rightarrow \argmax_{L \subseteq X, |L|=b} \Pr(\cup_{x \in L} B_\delta(x))$
+
+$\Rightarrow \argmax_{L \subseteq X, |L|=b} \frac{1}{|X|}|\{x' : \|x' - x\| \leq \delta, x \in L\}|$
+
+NP-hard Problem, greedy algo (ProbCover):
+
+$L = \emptyset$, $E = \{(x, x') : \|x - x'\| \leq \delta\}$ For $i = 1, \ldots b$:
+
+Add $x_i = \argmax_{x \in X} |\{x' : (x, x') \in E, x' \in X\}|$
+
+Update $L \leftarrow L \cup \{x_i\}$, $E \leftarrow E \setminus (\{x_i\} \times (B_\delta(x_i) \cap X))$
+
+\section{5 Support Vector Machine (SVM)}
+
+\textbf{Primal (soft margin):} $\min_{w,w_0,\xi} \frac{1}{2}\|w\|^2 + C\sum_i \xi_i$
+
+s.t. $y_i(w^\top x_i + w_0) \geq 1 - \xi_i$ and $\xi_i \geq 0$
+
+$\hookrightarrow$ intractable if $\phi(x_i)$ instead of $x_i$
+
+$\hookrightarrow$ $\xi_i = 0$ means $x_i$ was not neglected
+
+\textbf{Dual:} $\max_\alpha \sum_{i=1}^n \alpha_i - \frac{1}{2}\sum_{i=1}^n\sum_{j=1}^n \alpha_i\alpha_j y_i y_j x_i^\top x_j$
+
+s.t. $0 \leq \alpha_i \leq C$; $\sum_i \alpha_i y_i = 0$
+
+$\hookrightarrow$ solve $\alpha$ via quadratic optimisation
+
+\textbf{Optimal hyperplane:} $w^* = \sum_i \alpha_i^* y_i x_i$
+
+$\hookrightarrow$ $\alpha_i^* \neq 0$ only for support vectors
+
+\textbf{Optimal slack:} $\xi_i^* = \max(0, 1 - y_i(w^{*\top}x_i + w_0^*))$
+
+\subsection{5.1 Structural SVMs}
+
+$\min_{w,\xi} \frac{1}{2}\|w\|^2 + C\sum_{i \leq n} \xi_i$
+
+s.t. $\xi_i \geq 0$ and $\forall z \neq z_i$:
+
+$w^\top\Psi(z_i, y_i) - w^\top\Psi(z, y_i) \geq \Delta(z, z_i) + -\xi_i$
+
+$\Psi$ : joint-feature map; $\Delta$ : loss / class dissimilarity func.; $w^\top\Psi(x,y)$ : compatibility score btw. $x \& y$
+
+\textbf{Prediction:} $\hat{z} = \argmax_z w^\top\Psi(z,y)$
+
+\section{6 Ensemble Methods}
+
+$\hat{f}(x) \triangleq \frac{1}{B}\sum_{i \leq B} \hat{f}_i(x)$
+
+$\text{bias}[\hat{f}(x)] = \frac{1}{B}\sum \text{bias}[\hat{f}_i(x)]$
+
+$\V{\hat{f}} = \frac{1}{B^2}\sum \V[D]{\hat{f}_i} + \frac{1}{B^2}\sum\sum_{i,j} \Cov(\hat{f}_i, \hat{f}_j) \approx \frac{\sigma^2}{B}$
+
+\subsection{6.1 Bagging (Bootstrap aggregation)}
+
+1. Draw $B$ bootstrap sets $Z^{*1}, \ldots, Z^{*B}$
+
+2. Train $B$ base models $c_1, \ldots, c_B$
+
+3. Aggregate: $\hat{c}_{\text{BAG}}(x) = \begin{cases} \frac{1}{B}\sum_{i \leq B} c_i(x) & \text{regr.} \\ \text{sign}(\sum_i c_i(x)) & \text{class.} \end{cases}$
+
+\textbf{Why it works:} Small variance (weak learners), small covariance (almost indep. since $Z^{*i} \neq Z^{*j}$).
+
+\textbf{Compare, then Bag:} Train $c'_b, c''_b$, choose $\hat{c}'_{\text{BAG}}(x)$ if median$(\Delta_1, \ldots, \Delta_B) > 0$ with $\Delta_b := \hat{R}_n(c''_b) - \hat{R}_n(c'_b)$
+
+\textbf{Random Forest:} At each splitting step, u.a.r. choose $m$ of $p$ features \& split only one (best) feature. $\to$ reduce correlation between trees.
+
+\subsection{6.2 Boosting}
+
+Sequentially train weak learners on all data, but $\to$ weight of misclass. samples ($\to$ bias).
+
+\textbf{AdaBoost:} Forward stagewise additive modeling with exp. loss: $J(F) = \E{\exp(-yF(x))}$, min. at $F(x) = \frac{1}{2}\log \frac{P(y=1|x)}{P(y=-1|x)}$ (log-odds). Max-margin, self-avg. and interpolating ($\to$ overfitting) classifiers.
+
+[Init]: $w_i \leftarrow 1/n$ $\forall i \leq n$
+
+for $b = 1 \ldots B$:
+
+\quad [Train]: Fit classifier $c_b(x)$ using weights $w_i$
+
+\quad [Eval]: $\epsilon_b = \frac{\sum_{i=1}^n w_i \mathbb{I}\{c_b(x_i) \neq y_i\}}{\sum_{i=1}^n w_i}$ // error of $c_b$
+
+\quad [Update]: $\alpha_b = \log(\frac{1-\epsilon_b}{\epsilon_b})$ // always $>0$, final weight of $c_b$
+
+\quad [Reweight]: $w_i \leftarrow w_i \exp(\alpha_b \mathbb{I}\{c_b(x_i) \neq y_i\})$ normalize!
+
+Return $\hat{c}_{\text{ADA}}(x) = \text{sign}(\sum_{b=1}^B \alpha_b c_b(x))$
+
+\section{7 Deep Learning}
+
+\textbf{Sigmoid:} $\sigma(x) = \frac{1}{1+\exp(-x)} = \frac{e^x}{e^x+1}$, $\sigma'(x) = \sigma(x)\sigma(-x)$
+
+\textbf{Softmax:} $y_i \propto \exp(\beta z_i)$
+
+\subsection{7.1 Variational Autoencoders (VAE)}
+
+\textbf{Def:}
+
+$p_{\theta'}(z) \xrightarrow{\text{prior}} Z \xrightarrow[\text{likelihood}]{\text{dec}_\theta(z) = p_\theta(x|z)} X \xrightarrow[\text{approx. posterior}]{\text{enc}_\phi(x) = q_\phi(z|x)} Z$
+
+sample/obs. $X_i$ from latent representation $Z$
+
+\textbf{Train:} $\argmax_{\theta',\theta,\phi} \sum_i \log p_{\theta',\theta}(x_i)$
+
+$(*) = \E[Z \sim q_\phi(\cdot|x_i)]{\log \frac{p_{\theta',\theta}(x_i, Z)}{p_{\theta',\theta}(Z|x_i)} \frac{q_\phi(Z|x_i)}{q_\phi(Z|x_i)}}$
+
+$= \underbrace{\E{\log p_\theta(x_i|Z)} - D_{\text{KL}}(q_\phi(\cdot|x_i) \| p_{\theta'}(\cdot))}_{L(x_i,\theta,\phi) \equiv \text{ELBO} = \text{Infomax} - \text{Regularisation term}} + \underbrace{D_{\text{KL}}(q_\phi(\cdot|x_i) \| p_{\theta',\theta}(\cdot|x_i))}_{\geq 0} \geq L(x_i,\theta,\phi)$
+
+\textbf{Train:} $\theta^*, \phi^* = \argmax_{\theta,\phi} L(x_i, \theta, \phi)$
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{informative:} $\theta^* = \argmax_\theta I(X;Z) = \argmax_\theta \E[X,Z]{\log p(X|Z)} - \text{const w.r.t. } \theta \approx \argmax_\theta \sum_i \E[Z|X]{\log p(x_i|Z)}$
+\item \textbf{disentangled:} components in $Z$ associated with distinct feature in $X$ (see $D_{\text{KL}}$ in ELBO).
+\item \textbf{robust:} noise in $Z$ doesn't substantially affect $X$ (and vice versa). $\to$ choice of approx. post.!
+\end{itemize}
+
+\subsection{7.2 Transformers}
+
+\textbf{Attention:} Query: $Q = EW^Q$, Key: $K = EW^K$, Value: $V = EW^V$ from embedding $E$.
+
+$A = \text{softmax}(\frac{QK^\top}{\sqrt{d}})V$, $d$: E-dim.
+
+\begin{itemize}[leftmargin=*]
+\item \textbf{Self-Attention:} $Q,K,V$ from same sequence
+\item \textbf{Cross-Att.:} $Q$ from target, $K,V$ from source.
+\item \textbf{Multi-headed:} Multiple weights, Stack $A_i$'s.
+\item \textbf{Masked Self-Attention:} Future tokens masked ($-\infty$ in upper triangle of $P = QK^\top$)
+\end{itemize}
+
+\textbf{Pos. Encoding:} $p_{i,2j} = \sin(\alpha^{-2j}i)$, $p_{i,2j+1} = \cos(\alpha^{-2j}i)$, for $j \leq d/2$, $\alpha = 10^{4/d}$.
+
+\subsection{7.3 Stable Diffusion}
+
+\textbf{Forward Process:} For $t \leq T$, $\beta_t > 0$, let $\alpha_t = 1 - \beta_t$, $\bar{\alpha}_t = \prod_{s \leq t} \alpha_s$
+
+$q(x_t|x_{t-1}) = \mathcal{N}(x_t|\sqrt{1-\beta_t}x_{t-1}, \beta_t I)$
+
+$q(x_t|x_0) = \mathcal{N}(x_t|\sqrt{\bar{\alpha}_t}x_0, (1-\bar{\alpha}_t)I)$
+
+\textbf{Reverse Process:} UNet predicts noise $\epsilon_\theta(x_t, t)$ added to form $x_t$ from $x_0$. Then reconstruct $x_{t-1}$:
+
+$x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\left(x_t - \frac{\sqrt{1-\alpha_t}}{\sqrt{1-\bar{\alpha}_t}}\epsilon_\theta(x_t, t)\right) + \sigma_t z$, $z \sim \mathcal{N}(0, I)$
+
+\textbf{Stable Diffusion:} Combines text-image encoder (CLIP) with UNet in latent space.
+
+\textbf{CLIP:} Train text/image emb. $E_t, E_i$ to max. similarity: $\max_{i=j} \text{sim}(E_i^t, E_j^i)$, $\min_{i \neq j} \text{sim}(E_i^t, E_j^i)$
+
+\textbf{Cross-Attention in UNet:}
+
+$P_{bf mhw} = \sum_d Q_{bf dhw}K_{bf dm}$
+
+$S = s(P/\sqrt{d_K})$
+
+$A_{bf dhw} = \sum_m S_{bf mhw}V_{bf md}$
+
+\section{8 Clustering}
+
+\textbf{k-Means:} $R_{km}(c,Y) = \sum_{x \in X} \|x - \mu_{c(x)}\|^2$
+
+\subsection{8.1 Mixture Models}
+
+\textbf{Assume:} $x \sim p(x|\pi_{1\ldots k}, \theta_{1\ldots k}) = \sum_{c \leq k} \pi_c p(x|\theta_c)$
+
+\textbf{Find:} $\hat{\theta} = \argmax_\theta p(X|\pi,\theta) = \prod_x p(x|\pi,\theta)$
+
+\textbf{Gaussian Mixtures:} $\to p(x|\theta_c) = p(x|\mu, \Sigma)$
+
+Introduce latent indicator variables for mode assignments $M_{xc} \in \{0,1\}$. Then, the log-likelihood:
+
+$L(X,M|\theta) = \sum_x \sum_{c \leq k} M_{xc} \log(\pi_c p(x|\theta_c))$
+
+\subsubsection{8.1.1 EM-Algorithm for Gaussian Mixtures}
+
+\textbf{E-step:} Calculate
+
+$Q(\theta;\theta^{(t)}) = \E[M]{L(X,M|\theta)|X,\theta^{(t)}} = \ldots$
+
+$= \sum_x \sum_{c \leq k} (\E[M]{M_{xc}|X,\theta^{(t)}} \cdot \log \pi_c p(x|\theta_c))$
+
+where $\gamma_{xc} = \frac{p(x|c,\theta^{(t)})p(c|\theta^{(t)})}{p(x|\theta^{(t)})}$, $\sum_{c \leq k} \gamma_{xc} = 1$
+
+\textbf{M-step:} $\theta^{(t+1)} \in \argmax_\theta Q(\theta;\theta^{(t)})$
+
+s.t. $\sum_c \pi_c = 1$. Solve via Lagrangian, yields
+
+$\pi_c = \frac{1}{|X|}\sum_x \gamma_{xc}$, $\mu_c = \frac{\sum_x \gamma_{xc}x}{\sum_x \gamma_{xc}}$, $\sigma_c^2 = \frac{\sum_x \gamma_{xc}(x-\mu_c)^2}{\sum_x \gamma_{xc}}$
+
+\subsection{8.2 Non-parametric Bayesian Methods}
+
+$\text{Dir}(x|\alpha) = \frac{1}{B(\alpha)}\prod_{k=1}^n x_k^{\alpha_k-1}$, $B(\alpha) = \frac{\prod_{k=1}^n \Gamma(\alpha_k)}{\Gamma(\sum_{k=1}^n \alpha_k)}$
+
+\textbf{Rewrite Finite mixture models:}
+
+$p(x) = \sum_{k=1}^K \pi_k p(x|\theta_k) = \int p(x|\theta)G(\theta)d\theta$
+
+where $G(\theta) = \sum_{k=1}^\infty \pi_k \delta_{\theta_k}(\theta) \leftarrow$ discrete distr.
+
+\textbf{Stick-breaking process:}
+
+Draw $\theta_k \sim H$ and $\beta_k \sim \text{Beta}(1,\alpha)$ for $k=1,2,\ldots$
+
+$\pi_k = \beta_k(1 - \sum_{k=1}^{k-1}\pi_i) \Rightarrow \pi = \{\pi_k\}_{k=1}^\infty \sim \text{GEM}(\alpha)$
+
+$\Rightarrow \sum_{k=1}^\infty \pi_k \delta_{\theta_k}(\theta) = G(\theta) \sim \text{DP}(\alpha, H)$
+
+Sample $\theta^{(1)}, \theta^{(2)}, \ldots$ from $G$. Denote $\theta^{(i)} = \theta_{k_i}$.
+
+$\Rightarrow \theta^{(i)}, \theta^{(j)}$ with $k_i = k_j$ belong to same "cluster"
+
+\textbf{Chinese Rest. Process:}
+
+$P(\text{cust}_{n+1} \text{ joins table } \tau | P) = \begin{cases} \frac{|\tau|}{\alpha+n} & \text{if } \tau \in P, \\ \frac{\alpha}{\alpha+n} & \text{new table} \end{cases}$
+
+$P(\text{partition } P) = \frac{\alpha^{|P|}}{\alpha^{(n)}} \prod_{\tau \in P} (|\tau| - 1)!$
+
+expec. \#clusters: $\E[1] = \sum_{i \leq N} \frac{\alpha}{\alpha+i} \sim O(\alpha \log N)$
+
+\textbf{De Finetti:} $(X_1, \ldots, X_n)$ are inftly exchangable RVs if $P(X_1, \ldots, X_n) = \int \left(\prod_{i=1}^n p(X_i|G)\right) dP(G)$
+
+\subsubsection{8.2.1 Finite GMM}
+
+1. Cluster centers: $\mu_k \sim \mathcal{N}(\mu_0, \sigma_0)$
+
+2. Prob's of clusters: $\pi_{1\ldots K} \sim \text{Dir}(\alpha_{1\ldots K})$
+
+3. Cluster assignments: $z_i \sim \text{Categorical}(\pi_{1\ldots K})$
+
+4. Coordinates of data: $x_i \sim \mathcal{N}(\mu_{z_i}, \sigma_{z_i})$
+
+\subsubsection{8.2.2 DP Mixture Model (DP-GMM)}
+
+1. Cluster centers: $\mu_k \sim \mathcal{N}(\mu_0, \sigma_0)$, $k=1,2,\ldots$
+
+2. Prob's of clusters: $\pi = (\pi_1, \pi_2, \ldots) \sim \text{GEM}(\alpha)$
+
+3. Cluster assignments: $z_i \sim \text{Categorical}(\pi)$
+
+4. Coordinates of data: $x_i \sim \mathcal{N}(\mu_{z_i}, \sigma)$, $i=1\ldots N$
+
+\textbf{Fitting a DP-MM:} Collapsed Gibbs sampler
+
+$p(z_i = k | z_{-i}, x, \alpha, \mu) \propto \text{Prior} \times \text{Likelihood}$
+
+$\propto \begin{cases} \frac{|x_{-i,k}|}{\alpha+N-1} p(x_i|x_{-i,k}, \mu) & \text{for existing } k \\ \frac{\alpha}{\alpha+N-1} p(x_i|\mu) & \text{otw.} \end{cases}$
+
+$x_{-i,c} \triangleq \{x_j | z_j = c, j \neq i\}$ data assigned to clust. $c$
+
+\section{9 PAC Learning}
+
+\textbf{Want:} Distribution indep. error guarantees!
+
+\textbf{Expec./Gener. error:} $R(\hat{c}_n) = P_{X,Y}(\hat{c}_n(x) \neq c(x))$
+
+\textbf{Empirical error:} $\hat{R}_n(\hat{c}_n) = \frac{1}{n}\sum_{i=1}^n \mathbb{1}\{\hat{c}_n(x_i) \neq y_i\}$
+
+\textbf{PAC learnable:} $A$ can learn a concept class $C$ from $H$ if, given a suff. large sample, it outputs a hypothesis that generalizes well w/ high prob.
+
+(1) $0 < \epsilon < 1/2$, $0 < \delta < 1/2$, (2) $P_{X,Y}$ on $X \times \{0,1\}$:
+
+If $n \geq \text{poly}(1/\epsilon, 1/\delta, \dim(X))$,
+
+Then $P_{X,Y}(R(\hat{c}_n) - \inf_{c \in C} R(c) \leq \epsilon) \geq 1 - \delta$.
+
+If $A$ runs in time polynomial in $1/\epsilon$ and $1/\delta$, we say that $C$ is efficiently PAC learnable.
+
+\subsection{9.1 VC Inequality}
+
+$P(\cdots \geq \epsilon) \leq \ldots \leq \delta$
+
+\textbf{Select ERM:} $\hat{c}_n^* = \argmin_{c \in C} \hat{R}_n(c)$. Under unif. conv.:
+
+$P(R(\hat{c}_n^*) - \inf_{c \in C} R(c) > \epsilon) \leq P\left(\sup_{c \in C} |\hat{R}_n(c) - R(c)| > \frac{\epsilon}{2}\right)$
+
+\begin{itemize}[leftmargin=*]
+\item $|C|$ Finite: $P(\sup|\cdots| > \epsilon) \leq 2|C|\exp(-2n\epsilon^2)$
+\item $|C|$ Unbounded: $P(\cdots) \leq 9n^{\text{VCC}}\exp(-\frac{n\epsilon^2}{32})$
+\end{itemize}
+
+\subsection{9.2 Rectangle Learning}
+
+$P((R(\hat{c}_n^*) > \epsilon) \leq |C| \cdot (1-\epsilon)^n \leq |C| \cdot \exp(-n\epsilon) < \delta$
+
+\textbf{Union bound:} $P(\cup_i T_i) \leq \sum_i P(T_i)$
+
+\section{10 Appendix}
+
+\textbf{Complete the square:} If $p(x) \propto \exp(-\frac{1}{2}x^\top Ax + x^\top b)$, then $p(x) = \mathcal{N}(x | A^{-1}b, A^{-1})$
+
+\textbf{Constrained optimisation:}
+
+primal: $\min_x f(x)$ s.t. $g_i(x) = 0$; $h_j(x) \leq 0$
+
+Lagrangian: with each $\alpha_j \geq 0$
+
+$L(x,\lambda,\alpha) = f(x) + \sum_i \lambda_i g_i(x) + \sum_j \alpha_j h_j(x)$
+
+Solve: $\frac{\partial L}{\partial x} = 0$; $g_i(x) = 0$; $\alpha_j \geq 0$; $h_j(x) \leq 0$
+
+If Slater's cond. holds, $\exists x : g_i(x) = 0, h_j(x) < 0$, then we can solve the dual instead:
+
+$\max_{\lambda,\alpha}\{\min_x L(x,\lambda,\alpha)\}$ s.t. $\alpha_j \geq 0$
+
+Solve: $\frac{\partial L}{\partial x} = 0$; $\frac{\partial L}{\partial \lambda} = 0$; $\alpha_j h_j(x) = 0$; $\alpha_j \geq 0$
+
+\textbf{Metrics:}
+
+$\text{acc} = \frac{TP+TN}{n}$, $\text{prec} = \frac{TP}{TP+FP}$, $\text{FPR} = \frac{FP}{FP+TN}$
+
+$\text{Recall/TPR} = \frac{TP}{TP+FN}$, $\text{balanced acc} = \frac{1}{n}\sum_i \text{TPR}_i$
+
+$\text{F1-score} = \frac{2TP}{2TP+FP+FN}$, ROC = FPR/TPR
+
+\textbf{Conditional Gaussians:}
+
+$P_{X,Y} = \begin{bmatrix} X \\ Y \end{bmatrix} \sim \mathcal{N}\left(\begin{bmatrix} \mu_X \\ \mu_Y \end{bmatrix}, \begin{bmatrix} \Sigma_{XX} & \Sigma_{XY} \\ \Sigma_{YX} & \Sigma_{YY} \end{bmatrix}\right)$, $\Sigma_{ij}$ p.s.d.
+
+$\Rightarrow Y|X \sim \mathcal{N}(\tilde{\mu}, \tilde{\Sigma})$, where $\tilde{\mu} = \mu_Y + \Sigma_{YX}\Sigma_{XX}^{-1}(X - \mu_X)$, $\tilde{\Sigma} = \Sigma_{YY} - \Sigma_{YX}\Sigma_{XX}^{-1}\Sigma_{XY}$
+
+\textbf{Maximum Mean Discrepancy:} Is $p = q$?
+
+$\text{MMD}[\mathcal{F}, p, q] = \sup_{f \in \mathcal{F}} (\E[X \sim p]{f(X)} - \E[Y \sim q]{f(Y)})$
+
+$= \|\mu_p - \mu_q\|$. $p = q \Leftrightarrow \text{MMD}[\mathcal{F}, p, q] = 0$.
+
+$\rightsquigarrow \text{MMD}^2 = \E{k(X,X')} - 2\E{k(X,Y)} + \E{k(Y,Y')}$
+
+\end{multicols}
+\end{document}

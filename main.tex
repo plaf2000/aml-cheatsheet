@@ -1,0 +1,53 @@
+\documentclass[%
+    ,a4paper
+    ,fontsize=10.2pt % must be 11pt
+    ,landscape
+    ,pagesize
+    ,headinclude
+    ]{scrartcl}
+\usepackage[margin=5mm,headsep=1mm,footskip=1mm]{geometry}
+
+% Uncomment for debugging headers
+%\usepackage{showframe}
+
+% Include all packages from file.
+\input{preamble}
+\usepackage{shortcuts}
+
+% Set graphic path
+\graphicspath{ {./figures/} }
+
+% Set title
+\title{AML - Cheat Sheet}
+\author{}%Timo Streule}
+\date{}%\today}
+
+% ======================
+% === BEGIN DOCUMENT ===
+
+\begin{document}
+\begin{multicols*}{4}
+
+% Suppress enumeration of sections
+%\setcounter{secnumdepth}{0}
+
+%\maketitle
+
+%\input{sections/_example_}
+\input{sections/01_basics}
+\input{sections/02_density_estimation}
+\input{sections/03_regression}
+\input{sections/04_uncertity_quantification}
+% \input{sections/05_linear_classification}
+\input{sections/06_support_vector}
+\input{sections/07_ensembles}
+\input{sections/08_deep_learning}
+% \input{sections/09_model_selection}
+\input{sections/10_clustering}
+\input{sections/11_pac_learning}
+
+\input{sections/99_appendix}
+
+
+\end{multicols*}
+\end{document}

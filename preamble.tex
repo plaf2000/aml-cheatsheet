@@ -1,0 +1,164 @@
+% Language package 
+% \usepackage[utf8]{inputenc} % Not to use with Xe-LaTeX!
+\usepackage[no-math]{fontspec}
+\usepackage{kpfonts}
+\usepackage[T1]{fontenc}
+\usepackage[english]{babel}
+
+% Flush left
+\usepackage[document]{ragged2e}
+
+% Set date format
+\usepackage[useregional=numeric]{datetime2}
+
+% Arithmetic / Coding package
+\usepackage{ifthen}
+\usepackage{calc}
+
+% Spacing
+\setlength\columnsep{7pt}% Column spacing for multicols
+\usepackage{setspace}\setstretch{0.9}
+% Move operators tighter together
+\thinmuskip=2mu                     % default: 3mu
+\medmuskip=3mu plus 1mu minus 3mu   % default: 4mu plus 2mu minus 4mu
+\thickmuskip=4mu plus 3mu minus 3mu % default: 5mu plus 5mu
+%\setlength{\thickmuskip}{5mu}      % not possible due to \usepackage{calc}
+% Array and matrix spacing
+\setlength\arraycolsep{1pt}
+
+% Control (primitive) list items
+\usepackage{enumitem}
+\setlist{leftmargin=*,nosep,labelsep=2pt,parsep=-0.2pt}  % reduce spaces
+\setlist[itemize,2]{label=$\circ$}
+
+% Formatting
+\usepackage{multicol, multirow, tabularx}
+\usepackage{makecell}
+
+% Images
+\usepackage{graphicx}
+
+% Custom emphasizing
+\DeclareTextFontCommand{\emph}{\color{MediumOrchid}\bfseries\sffamily}
+
+
+% =============
+% === FONTS ===
+
+% Font sizes
+\setkomafont{section}{\normalsize}
+\setkomafont{subsection}{\normalsize}
+\setkomafont{subsubsection}{\normalsize}
+%\setkomafont{paragraph}{\normalsize}
+%\setkomafont{subparagraph}{\normalsize}
+
+% Define minion font
+\newfontfamily{\minionpro}{MinionPro}[%
+    Path=fonts/MinionPro/,
+    Extension=.otf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-It,
+    BoldItalicFont=*-BoldIt,
+    WordSpace=0.7,
+]
+
+% Set fonts
+\setmainfont{MinionPro}[%
+    Path=fonts/MinionPro/,
+    Extension=.otf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-It,
+    BoldItalicFont=*-BoldIt,
+    WordSpace=0.7,
+]
+\setsansfont[LetterSpace=-1.8,WordSpace=0.7,Scale=0.9]{Open Sans}
+
+\defaultfontfeatures{Mapping=tex-text}
+\defaultfontfeatures{Ligatures=TeX}
+\addfontfeature{LetterSpace=-20.0}
+
+
+% ====================
+% === TITLE FORMAT ===
+
+\usepackage{titling}
+
+% Reduce default vertical space before and after
+\setlength{\droptitle}{-3em}
+\renewcommand{\maketitlehookd}{\vspace{-1.5em}}
+
+% Title
+\pretitle{\centering\sffamily\large\bfseries}
+\posttitle{\par}
+% Author
+\preauthor{\centering\sffamily\small\ifx\theauthor\empty{}\else{\;-\;}\fi}
+\postauthor{}
+% Date - remove spacing above and below
+\predate{\centering\sffamily\small\ifx\thedate\empty{}\else{\;-\;}\fi\itshape}
+\postdate{\ifx\thedate\empty{}\else{\par}\fi}
+
+
+% =======================
+% === SECTIONS FORMAT ===
+
+\usepackage[svgnames]{xcolor}
+
+% Make spacing tight
+\RedeclareSectionCommands[%
+    runin=false,
+    beforeskip=0ex plus .5ex,
+    afterskip=0ex plus .1ex,
+]{section,subsection,subsubsection}
+
+% Define colors
+\colorlet{section-color}{RoyalBlue!90}
+\colorlet{subsection-color}{RoyalBlue!40}
+\colorlet{subsubsection-color}{RoyalBlue!20}
+\colorlet{section-text-color}{white}
+\colorlet{subsection-text-color}{black}
+\colorlet{subsubsection-text-color}{black}
+
+% Put in colored box with fixed height
+\makeatletter
+\renewcommand\sectionlinesformat[4]{%
+    \colorbox{#1-color}{%
+        \begin{minipage}[b][.6em][t]{\dimexpr\linewidth-2\fboxsep\relax}
+            \vspace{-.3ex}%
+            \raggedsection\color{#1-text-color}\@hangfrom{#3}{#4}%
+            \vspace{-.3ex}%
+        \end{minipage}%
+}}
+\makeatother
+
+
+% ===========================
+% === HEADERS AND FOOTERS ===
+
+\usepackage[footsepline]{scrlayer-scrpage}
+
+\pagestyle{plain.scrheadings}
+
+% Clear and set styles
+\clearpairofpagestyles
+%\clearscrheadfoot
+\setkomafont{pageheadfoot}{\color{gray}\sffamily}
+
+% Reset pagination format
+\setkomafont{pagination}{}
+
+% Set content
+%\ihead*{}
+%\chead*{}
+%\ohead*{tstreule $\vert$ Page \pagemark}
+%\ifoot*{}
+%\cfoot*{}
+%\ofoot*{}
+
+
+% =====================
+% === COLOR STYLING ===
+\everymath\expandafter{\the\everymath\color{MediumBlue}}
+    % --> use "\the\everymath" for default math color
+    % --> use "\normalcolor" for other way around

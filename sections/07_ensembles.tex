@@ -1,0 +1,57 @@
+\section{Ensemble Methods \quad 
+{\scriptsize\sffamily $\color{section-text-color}\hat{f}(x) \triangleq \frac{1}{B}\sum_{i \leq B} \hat{f}_i(x)$}}
+
+$\text{bias}[\hat{f}(x)] = \frac{1}{B}\sum \text{bias}[\hat{f}_i(x)]$
+
+$\V{\hat{f}} = \frac{1}{B^2}\sum \V[D]{\hat{f}_i} + \frac{1}{B^2}\sum\sum_{i,j} \Cov(\hat{f}_i, \hat{f}_j) \approx \frac{\sigma^2}{B}$
+
+% ===
+\subsection{Bagging
+\enskip\normalfont\sffamily (\textbf{B}ootstrap \textbf{agg}regation)}
+
+\begin{enumerate}
+    \item Draw $M$ bootstrap sets $Z'_1, \ldots, Z'_M$
+    \item Train $M$ base models $b^{(1)}, \ldots, b^{(M)}$
+    \item \textbf{Aggregate:}
+        $\bbar^{(M)}(\bm x) =
+        \left\{
+        \begin{array}{@{}l@{\enskip}l@{}}
+            \frac1M \sum_{t\leq M} b^{(t)}(\bm x)           & \text{regr.} \\
+            \mathrm{sign}\paren{ \sum_t b^{(t)}(\bm x) }    & \text{class.}
+        \end{array}\right.$
+\end{enumerate}
+
+\emph{Why it works:}
+Small \textit{variance} (weak learners)
+
+\emph{Random Forest:}\enskip
+At each splitting step, u.a.r. choose $m$ of $p$ features \& split only one (best) feature.
+$\to$ reduce \textit{correlation} between trees.
+% ===
+\subsection{Boosting}
+
+\textit{Sequentially} train weak learners on all data, but \rotatebox[origin=c]{45}{$\to$}weight of misclass. samples (\rotatebox[origin=c]{-45}{$\!\to$}bias).
+
+% \emph{FSAM {\normalfont\sffamily (forward stagewise additive modeling)}:}
+
+\emph{AdaBoost:}\enskip
+Stat. learning (\textit{forward stagewise additive modeling}) with \textbf{exp. loss}, trains max-margin ($= y_i \bbar(\bm x_i)$), self-avg. and interpolating (\rotatebox[origin=c]{-45}{$\!\to$}overfitting) classifiers.
+
+\begin{highlightbox}
+    \textit{\scriptsize [Init]:} $w_i \leftarrow 1/n$ $\forall i \leq n$
+    for $b = 1 \ldots B$:
+    \begin{itemize}[leftmargin=25pt]
+        \item[\textit{\scriptsize [Train]:}]
+            Fit classifier $c_b(x)$ using weights $w_i$
+        \item[\textit{\scriptsize [Eval]:}]
+            $\epsilon_b = \frac{\sum_{i=1}^n w_i \mathbb{I}\{c_b(x_i) \neq y_i\}}{\sum_{i=1}^n w_i}$ // error of $c_b$
+        \item[\textit{\scriptsize [Update]:}]
+            $\alpha_b = \log(\frac{1-\epsilon_b}{\epsilon_b})$ // always $>0$, final weight of $c_b$
+        \vspace{-2pt}
+        \item[\textit{\scriptsize [Reweight]:}]
+            $w_i \leftarrow w_i \exp(\alpha_b \mathbb{I}\{c_b(x_i) \neq y_i\})$ normalize!
+    \end{itemize}
+    Return $\hat{c}_{\text{ADA}}(x) = \text{sign}(\sum_{b=1}^B \alpha_b c_b(x))$
+\end{highlightbox}
+
+% ===
