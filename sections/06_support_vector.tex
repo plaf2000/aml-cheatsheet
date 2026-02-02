@@ -35,7 +35,7 @@ Optimal slack: \: $\xi_i^\ast = \max(0, 1 - y_i(\bm w^{\ast\top} \!\bm x_i {+} w
 
 $\min\limits_{\bm w \color{OrangeRed}, \xi} \frac12 \norm{\bm w}^2 \color{OrangeRed} + \frac{C}{n} \sum\limits_{i\leq n} \xi_i$
 \quad s.t. $\color{OrangeRed} \xi_i \geq 0$ and $\forall y' \neq y_i :$\\
-\quad $\bm w^\top \Psi(x_i, y_i) \geq \Delta(y_i, y') + \underbracket[.7pt][.7pt]{\bm w^\top \Psi(x_i, y')}_{\hookrightarrow \text{ mislabelings}} \color{OrangeRed} - \xi_i \color{Green} - \epsilon$\\
+\quad $\bm  f_w(x_i, y_i)\geq \Delta(y_i, y') + \bm f_w(x_i, y') \color{OrangeRed} - \xi_i \color{Green} - \epsilon$\\ % \overbracket[.7pt][.7pt]{\bm w^\top \Psi(x_i, y')}^{\text{mislabelings}} 
 
 % ---
 %\columnbreak
@@ -43,10 +43,10 @@ $\min\limits_{\bm w \color{OrangeRed}, \xi} \frac12 \norm{\bm w}^2 \color{Orange
 
 $\Psi$ : \textit{joint-feature map}; \:
 $\Delta$ : loss / class dissimilarity func.; \:
-$\bm w^\top \Psi(x,y)$ : compatibility score btw. $x$ and $y$; \:
-$\color{Green} \epsilon$ : tolerance / universal slack variable.
+$\bm f_w(x,y) = w^\top \Psi(x,y)$ : compatibility score btw. $x$ and $y$; \:
+$\color{Green} \epsilon$ : tol. / univer. slack variable.
 
-\textbf{Prediction:} \: $c(x) = \argmax_y \bm w^\top \Psi(x,y)$
+\textbf{Prediction:} \: $c(x) = \argmax_y \bm f_w(x,y)$
 \vspace{-3pt}
 
 \textit{Note:} For optimal $\bm w^\ast$, $\xi^\ast$, $\textrm{emp. risk}(\bm w^\ast) \leq \frac1n \sum_i \xi_i^\ast$

@@ -31,15 +31,10 @@ $\hat\beta = \arg\min_\beta \sum_{i\leq n} (y_i - x_i^\top \beta)^2 \color{Orang
 
 
 \emph{Bias-variance:}
-$\text{MSE} = \E[D,X,Y]{(\hat{f}(x) - Y)^2}$
+$\text{MSE} = \E[D,X,Y]{(\hat{f}(x) - Y)^2} = (\E[D,X]{\hat{f}(x)} - \E[Y])^2 + \E[D]{(\E[D,X]{\hat{f}(x)} - \hat{f}(x))^2} + \E{(\E[Y] - Y)^2} = \text{bias}^2 + \text{variance} + \text{noise}$
 
- $= (\E[D,X]{\hat{f}(x)} - \E[Y])^2 + \E[D]{(\E[D,X]{\hat{f}(x)} - \hat{f}(x))^2} + \E{(\E[Y] - Y)^2}$
-
-$= \text{bias}^2 + \text{variance} + \text{noise}$
-
-\emph{Gauss-Markov Theorem:}\\
+\emph{Gauss-Markov Theorem:}
 For any linear estimator $\widetilde\theta = c\!^\top \bm y = a\!^\top (\hat\beta {+} \bm{Dy})$ that is unbiased for $a^\top \beta$, it holds: $\V{a^\top \hat\beta} \leq \V{c^\top \bm y}$.
-
 Among all linear \textbf{u}-estimators, $\hat\beta\ped{LS}$ minimises the gen. error!
 
 \subsection{3.1 Causality}

@@ -75,13 +75,18 @@ Must have a (pot. $\infty$-dim.) \textbf{feature vector} $\phi$ s.t. $k(\bm x, \
     A valid kernel $k$ must have a (potent. $\infty$-dim.) feature vector $\phi(\bm x)$ s.t. $k(\bm x, \bm x') = \phi^\top \! (\bm x) \phi (\bm x')$.
 \fi
 
-\emph{Common kernels:}\\
-\begin{tabular}{@{}l @{:\hfill\enskip}l}
-    Linear & $\bm x^\top \bm x'$ \\
-    Polynomial & $(\bm x^\top \bm x' + 1)^p$,\enskip $\color{gray} p\in\mathbb N$ \\
-    RBF (Gaussian) & $\exp(-\norm{\bm x - \bm x'}_2^2 / h^2)$ \\
-    Sigmoid & $\tanh(\kappa \cdot \bm x^\top \bm x' - b)$
-\end{tabular}
+\emph{Common kernels:}
+% \begin{tabular}{@{}l @{:\hfill\enskip}l}
+%     Linear & $\bm x^\top \bm x'$ \\
+%     Polynomial & $(\bm x^\top \bm x' + 1)^p$,\enskip $\color{gray} p\in\mathbb N$ \\
+%     RBF (Gaussian) & $\exp(-\norm{\bm x - \bm x'}_2^2 / h^2)$ \\
+%     Sigmoid & $\tanh(\kappa \cdot \bm x^\top \bm x' - b)$
+% \end{tabular}
+    Linear: $\bm x^\top \bm x'$.
+    Polynomial:  $(\bm x^\top \bm x' + 1)^p$,\enskip $\color{gray} p\in\mathbb N$.
+    RBF (Gaussian):  $\exp(-\norm{\bm x - \bm x'}_2^2 / h^2)$.
+    Sigmoid:  $\tanh(\kappa \cdot \bm x^\top \bm x' - b)$.
+
 
 \emph{Kernel construction:}
 \enskip\textbullet~$k_1 {+} k_2$

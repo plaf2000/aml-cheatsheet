@@ -21,6 +21,8 @@
         $f(\E{X}) \leq \E{f(X)}$
     \item Tot exp:\enskip
         $\E{X} = \E{\E{X\mid Y}}$
+    \item Raylength:\enskip 
+        $M=M^\top, R(M, x) = \frac{x^\top M x}{x^\top x} \in [\lambda_{\min}(M), \lambda_{\max}(M)]$
 \end{itemize}
 
 % ===
@@ -81,5 +83,10 @@
         \;\textbullet\,
         $\nabla\!\tanh x {=} 1\!-\tanh^2\! x$
 \end{itemize}
+
+\subsection{PCA}
+Data matrix $\bm X \in \R^{n \times d}$, mean-centered: $\bm{\tilde X} = \bm X - \bm 1_n \bm\mu^\top$, $\bm\mu = \frac1n \sum_i \bm X_{i\cdot}$.
+Cov. matrix: $\bm\Sigma = \frac1n \bm{\tilde X}^\top \bm{\tilde X}$. Eigendecomp.: $\bm\Sigma = \bm Q \bm\Lambda \bm Q^\top$, $\bm\Lambda = diag(\lambda_1, \ldots, \lambda_d)$, $\lambda_1 \geq \ldots \geq \lambda_d \geq 0$.
+If $M = D-1$ error is $J=q_D^\top \Sigma q_D$, $q_D$ eig.vec. smallest eig.val. $\lambda_D$.
 
 % ===
