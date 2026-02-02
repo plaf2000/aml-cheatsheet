@@ -157,3 +157,7 @@ $x_{t-1} = \frac{1}{\sqrt{\alpha_t}}\left(x_t - \frac{\sqrt{1-\alpha_t}}{\sqrt{1
 
 
 % ===
+
+\subsection{Graph Neural Networks}
+$H^{(\ell+1)} = \phi\left( \tilde{D}^{-1/2} \tilde{A} \tilde{D}^{-1/2} H^{(\ell)} W^{(\ell)} \right)$, $\tilde{A} = A + I$, $\tilde{D}_{ii} = \sum_j \tilde{A}_{ij}.$ \enskip
+$H^{\ell} \to u_1u_1^\top X$ as $\ell \to \infty$. Two sol.: 1) Graph Isomorphism Net 2) Laplace pos. enc. 

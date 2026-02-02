@@ -1,8 +1,8 @@
 \section{Clustering}
 
 % ===
-\emph{\textit{k}-means:}\enskip
-$\arg\min_\theta \sum_{i\leq n} \norm{\bm x_i - \theta_{c(\bm x_i)}}^2$
+% \emph{\textit{k}-means:}\enskip
+% $\arg\min_\theta \sum_{i\leq n} \norm{\bm x_i - \theta_{c(\bm x_i)}}^2$
 
 % ===
 \subsection{Mixture Models}
@@ -65,7 +65,11 @@ $p(x) = \sum_{k=1}^K \pi_k p(x\mid \theta_k)
 = \int p(x\mid\theta) G(\theta) \diff\theta$
 
 where $G(\theta) = \sum_{k=1}^\infty \pi_k \delta_{\theta_k}\!(\theta)$
-$\color{gray} \leftarrow \text{ discrete distr.}$
+$\color{gray} \leftarrow \text{ discrete distr.}$\\
+\textbf{Likelihood} $p(x_i | \theta) \to$ \textbf{Conj. prior} $p(\theta | \Theta)$\\
+B.lli/(Neg.) Binomial/Geom ${\to}$ Beta\\
+Categorical, Multinomial ${\to}$ Dirichlet\\
+Normal (known $\sigma^2$) ${\to}$ Normal\\
 
 
 % \emph{Stick-breaking process:}
@@ -127,47 +131,45 @@ $\color{gray} \leftarrow \text{ discrete distr.}$
         $x_i \sim \Gauss{\mu_{z_i}, \sigma_{z_i}}$
 \end{enumerate}
 
+\subsubsection{Gibbs Sampling}
+Init. $\Theta^{(0)}$ arbitrarily. For $t=1,2,\ldots$: 1) Sample $\Theta_1^{(t+1)} \sim p(\Theta_1 \mid \Theta_2^{(t)}, \ldots, \Theta_\ell^{(t)}, X)$. 2) Sample $\Theta_2^{(t+1)} \sim p(\Theta_2 \mid \Theta_1^{(t+1)}, \Theta_3^{(t)}, \ldots, \Theta_\ell^{(t)}, X)$. 3) Continue until $\Theta^{(t+1)}_\ell$. \\
 
-\subsubsection{DP Mixture Model (DP-GMM)}
-\begin{enumerate}
-    \item Cluster centers:\enskip
-        $\mu_k \sim \Gauss{\mu_0, \sigma_0}$,\enskip
-        $\color{gray} k {=} 1, 2, \ldots$
-    \item Prob's of clusters:\enskip
-        $\pi = (\pi_1, \pi_2, \ldots) \sim \mathrm{GEM}(\alpha)$
-    \item Cluster assignments:\enskip
-        $z_i \sim \mathrm{Categorical}(\pi)$
-    \item Coordinates of data:\enskip
-        $x_i \sim \Gauss{\mu_{z_i}, \sigma}$,\enskip
-        $\color{gray} i {=} 1 \ldots N$
-\end{enumerate}
+%         $\color{gray} k {=} 1, 2, \ldots$
+%     \item Prob's of clusters:\enskip
+%         $\pi = (\pi_1, \pi_2, \ldots) \sim \mathrm{GEM}(\alpha)$
+%     \item Cluster assignments:\enskip
+%         $z_i \sim \mathrm{Categorical}(\pi)$
+%     \item Coordinates of data:\enskip
+%         $x_i \sim \Gauss{\mu_{z_i}, \sigma}$,\enskip
+%         $\color{gray} i {=} 1 \ldots N$
+% \end{enumerate}
 
-\emph{Fitting a DP-MM:}\enskip
-\textbf{Collapsed Gibbs sampler}
+% \emph{Fitting a DP-MM:}\enskip
+% \textbf{Collapsed Gibbs sampler}
 
-$p(z_i {=} k \mid \bm z_{-i}, \bm x, \alpha, \bm\mu) \propto
-\begingroup \color{OrangeRed} \text{Prior} \endgroup \times
-\begingroup \color{Green} \text{Likelihood} \endgroup$
-\\\hfill
-$\propto \begin{cases}
-    \begingroup \color{OrangeRed}
-        \frac{\abs{\bm x_{-i,k}}}{\alpha+N-1}
-    \endgroup
-    \begingroup \color{Green}
-        p(x_i \vert \bm x_{-i, k}, \bm\mu)
-    \endgroup
-    & \text{for existing } k
-    \\
-    \begingroup \color{OrangeRed}
-        \frac{\alpha}{\alpha+N-1}
-    \endgroup
-    \begingroup \color{Green}
-        p(x_i\vert \bm\mu)
-    \endgroup
-    & \text{otw.}
-\end{cases}$
+% $p(z_i {=} k \mid \bm z_{-i}, \bm x, \alpha, \bm\mu) \propto
+% \begingroup \color{OrangeRed} \text{Prior} \endgroup \times
+% \begingroup \color{Green} \text{Likelihood} \endgroup$
+% \\\hfill
+% $\propto \begin{cases}
+%     \begingroup \color{OrangeRed}
+%         \frac{\abs{\bm x_{-i,k}}}{\alpha+N-1}
+%     \endgroup
+%     \begingroup \color{Green}
+%         p(x_i \vert \bm x_{-i, k}, \bm\mu)
+%     \endgroup
+%     & \text{for existing } k
+%     \\
+%     \begingroup \color{OrangeRed}
+%         \frac{\alpha}{\alpha+N-1}
+%     \endgroup
+%     \begingroup \color{Green}
+%         p(x_i\vert \bm\mu)
+%     \endgroup
+%     & \text{otw.}
+% \end{cases}$
 
-$\bm x_{-i,c} \coloneqq \brace{ x_j \mid z_j {=} c, j {\neq} i }$ data assigned to clust. $c$
+% $\bm x_{-i,c} \coloneqq \brace{ x_j \mid z_j {=} c, j {\neq} i }$ data assigned to clust. $c$
 
 
 
